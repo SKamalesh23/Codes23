@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            display: flex;
+            justify-content: center;
+            height: 100px;
+            width: 300px;
+            border: 1px solid black;
+        }
+    </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js" integrity="sha512-8ExARjWWkIllMlNzVg7JKq9RKWPlJABQUNq6YvAjE/HobctjH/NA+bSiDMDvouBVjp4Wwnf1VP1OEv7Zgjtuxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const socket =  io('http://localhost:3500');
+        socket.on('connect',() => {
+            console.log("Connected to Server");
+        });
+        socket.on('message',(data) => {
+            const newms = document.createElement('div');
+            newms.textContent=data;
+            document.getElementById('messages').appendChild(newms);
+        });
+        socket.on('error',(err)=>{
+            console.log(err);
+        })
+        socket.on('disconnect',()=>{
+            console.log("Disconnected");
+        })
+        function sendm(){
+            var x = document.getElementById("txt").value;
+            var x1 = document.getElementById("txt1").value;
+            console.log(x);
+            socket.emit('message',{userId:x1,text:x});
+            document.getElementById('txt').value="";
+            document.getElementById('txt').focus();
+        }
+    </script>
+  
+</head>
+<body>
+    <div class="box">
+        <h6 id="res"></h6>
+    </div>
+    <input id="txt" type="text">
+    <input type="text" id="txt1">
+    <input type="button" onclick="sendm()" value="SEND">
+    <div id="messages"></div>
+</body>
+</html>
