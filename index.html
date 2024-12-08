@@ -14,40 +14,56 @@
         }
     </style>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js" integrity="sha512-8ExARjWWkIllMlNzVg7JKq9RKWPlJABQUNq6YvAjE/HobctjH/NA+bSiDMDvouBVjp4Wwnf1VP1OEv7Zgjtuxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        const socket =  io('http://localhost:3500');
-        socket.on('connect',() => {
-            console.log("Connected to Server");
-        });
-        socket.on('message',(data) => {
-            const newms = document.createElement('div');
-            newms.textContent=data;
-            document.getElementById('messages').appendChild(newms);
-        });
-        socket.on('error',(err)=>{
-            console.log(err);
-        })
-        socket.on('disconnect',()=>{
-            console.log("Disconnected");
-        })
-        function sendm(){
-            var x = document.getElementById("txt").value;
-            var x1 = document.getElementById("txt1").value;
-            console.log(x);
-            socket.emit('message',{userId:x1,text:x});
-            document.getElementById('txt').value="";
-            document.getElementById('txt').focus();
-        }
-    </script>
+    
   
 </head>
 <body>
     <div class="box">
         <h6 id="res"></h6>
     </div>
-    <input id="txt" type="text">
-    <input type="text" id="txt1">
+    <input class="txt" id="txt" type="text">
+    <input class="txt" id="txt1" type="text">
     <input type="button" onclick="sendm()" value="SEND">
-    <div id="messages"></div>
+    <ul id="messages"></ul>
+    <p class="activity"></p>
 </body>
 </html>
+<script>
+    const socket =  io('http://localhost:3500');
+    const activity = document.querySelector('.activity');
+    const msgInput = document.querySelector('.txt');
+    console.log(msgInput);
+    socket.on('connect',() => { 
+        console.log("Connected to Server");
+    });
+    socket.on('message',(data) => {
+        activity.textContent="";
+        const newms = document.createElement('li');
+        newms.textContent=data;
+        document.getElementById('messages').appendChild(newms);
+    });
+    
+    socket.on('error',(err)=>{
+        console.log(err);
+    })
+    socket.on('disconnect',()=>{
+        console.log("Disconnected");
+    })
+    function sendm(){
+         var x = document.getElementById("txt");
+        socket.emit('message',x.value);
+        x.value="";
+        x.focus();
+    }
+    msgInput.addEventListener('keypress',()=>{
+       socket.emit('activity',socket.id.substring(0,4)) ;
+    })
+    let activityTimer;
+    socket.on('activity',(data) => {
+        activity.textContent=data;
+        clearTimeout(activityTimer);
+        activityTimer = setTimeout(()=>{
+            activity.textContent="";
+        },1000)
+    })
+</script>
