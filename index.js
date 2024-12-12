@@ -53,7 +53,7 @@ io.on('connection',(socket) => {
             io.to(user.room).emit('userList',{
                 users : getUsersInRoom(user.room)
             })
-            getUsersInRoom(user.room)
+            // getUsersInRoom(user.room)
             //Update rooms List for everyone
             io.emit('roomList',{
                 rooms : getAllActiveRooms()
@@ -116,10 +116,11 @@ io.on('connection',(socket) => {
         )
     }
     function getUser(id){
+        console.log("In getuser")
         return userState.users.find(user => user.id === id)
     }
     function getUsersInRoom(room){
-        console.log(userState.users.filter(user=> user.room === room))
+        // console.log(userState.users.filter(user=> user.room === room))
         return userState.users.filter(user=> user.room === room)
     }
     function getAllActiveRooms() {

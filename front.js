@@ -48,8 +48,6 @@ function sendm(){
     
 }
 function chatRoom() {
-    // e.preventDefault();
-    console.log(room.value);
     if(room.value && name1.value){
         socket.emit("enterRoom",{
             name:name1.value,
@@ -58,20 +56,25 @@ function chatRoom() {
     }
 }
 function showUsers(users) {
-    console.log("in func")
-    console.log(users)
-    userList.textContent=""
-    if(users){
-        console.log(users.room)
-        userList.innerHTML=`<b>Users in ${users.room} :</b>`
-        users.forEach((user,i) => {
-            userList.textContent+=` ${user.name}`
-            if(users.length > 1 && i !== users.length-1){
-                userList.textContent+=` ,`
-            }
-        });
+    // const { room, users } = userData;
+    console.log("In function");
+    console.log("Room:", users[0].room);
+
+    // Clear the existing user list
+    // userList.textContent = "";
+    
+    // Add the room title
+    userList.innerHTML = `<b>Users in ${users[0].room}:</b> `;
+    
+    // Check if there are users
+    if (users && users.length > 0) {
+        const userNames = users.map(user => user.name).join(", ");
+        userList.innerHTML += userNames;
+    } else {
+        userList.innerHTML += "No users found.";
     }
 }
+
 function showRooms(rooms) {
     roomList.textContent=""
     if(rooms){
@@ -98,10 +101,12 @@ socket.on('activity',(data) => {
     },1000)
 })
 socket.on('userList',({users})=>{
+    console.log("on userlist")
     console.log(users)
     showUsers(users);
 })
 socket.on('roomList',({rooms})=>{
-    showUsers(rooms);
+    console.log(rooms)
+    showRooms(rooms);
 })
 //for showing the list of users in the room
