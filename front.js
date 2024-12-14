@@ -9,26 +9,42 @@ const chat = document.querySelector('.chat-display');
 socket.on('connect',() => { 
     console.log("Connected to Server");
 });
-socket.on('message',(data) => {
-    // activity.textContent="";
-    const {name,text,time}=data
-    const newms = document.createElement('li');
-    newms.className='post'
-    if(name===name.value)newms.className='post post-left'
-    if(name!==name.value && name!=='Admin')newms.className='post post-left'
-    if(name!=='Admin'){
-        newms.innerHTML=`<div class="post__header
-         ${name===name1.value? 'post__header--user':'post__header--reply'}">
-         <span>${name}</span>
-         <span>${time}</span></div>
-         <div>${text}</div>`
+socket.on('message', (data) => {
+    const { name, text, time } = data;
+
+    // Create a new list item for the message
+    const newMessage = document.createElement('li');
+
+    // Check if the message is sent by the current user
+    if (name === name1.value) {
+        newMessage.className = 'post-right'; // Sent message (right side)
+    } else if (name === 'Admin') {
+        newMessage.className = 'post-admin'; // Admin message
+    } else {
+        newMessage.className = 'post-left'; // Received message (left side)
     }
-    else{
-        newms.innerHTML =`<div>${text}</div>`
+
+    // Add message content based on the sender
+    if (name !== 'Admin') {
+        newMessage.innerHTML = `<br>
+            <span class="message-name">${name}</span>
+            <div class="message-content">${text}</div>
+            <span class="message-time">${time}</span><br>
+        `;
+    } else {
+        newMessage.innerHTML = `<div class="post-admin">${text}</div><br>`;
     }
-    document.querySelector('.chat-display').appendChild(newms);
-    // chat.scrollTop=chat.scrollHeight;
+
+    // Append the new message to the chat display
+    chat.appendChild(newMessage);
+    console.log("chat",chat);
+    setTimeout(() => {
+        chat.scrollTop = chat.scrollHeight;
+        console.log(`srolltop : ${chat.scrollTop} and scrollheight  : ${chat.scrollHeight}`);
+    }, 0);
+        
 });
+
 
 socket.on('error',(err)=>{
     console.log(err);
@@ -37,7 +53,6 @@ socket.on('disconnect',()=>{
     console.log("Disconnected");
 })
 function sendm(){
-    // e.preventDefault();
      var x = document.getElementById("txt");
      if(x.value && room.value && name1.value)
      {
@@ -89,9 +104,14 @@ function showRooms(rooms) {
 }
 document.querySelector('#msg').addEventListener('click',sendm);
 document.querySelector('#but').addEventListener('click',chatRoom);
-msgInput.addEventListener('keypress',()=>{
-    socket.emit('activity',name1.value) ;
- })
+msgInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') { // Check if the pressed key is 'Enter'
+        event.preventDefault()
+        sendm(); // Call the function you want to execute
+    } else {
+        socket.emit('activity', name1.value);
+    }
+});
 let activityTimer;
 socket.on('activity',(data) => {
     activity.textContent=data;

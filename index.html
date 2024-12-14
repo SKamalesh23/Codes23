@@ -12,18 +12,27 @@
   
 </head>
 <body>
-    <form class="login-user">
-        <input type="text" id="name" placeholder="Name"/>
-        <input type="text" id="room" placeholder="Enter Room No."/>
-        <input id="but" type="button" value="JOIN">
-    </form>
-    <ul class="chat-display"></ul>
-    <p class="user-list"></p>
-    <p class="room-list"></p>
-    <p class="activity"></p>
-    <form class="chat">
-        <input class="txt" id="txt" type="text">
-        <input id="msg" type="button"  value="SEND">
-    </form>
+    <div class="outer-div">
+        <form class="login-user">
+            <input type="text" id="name" placeholder="Name"/>
+            <input type="text" id="room" placeholder="Enter Room No."/>
+            <input id="but" type="button" value="JOIN">
+        </form>
+            <div class="chatdd">
+                 <ul class="chat-display"></ul>
+                 <p class="activity"></p>
+            </div>
+     
+       
+        <form class="chat">
+            <input class="txt" id="txt" type="text">
+            <input id="msg" type="button"  value="SEND">
+        </form>
+        <div>
+            <p class="user-list">users</p>
+            <p class="room-list">rooms</p>
+           </div>
+    </div>
+   
     </body>
 </html>
