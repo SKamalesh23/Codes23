@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js" integrity="sha512-8ExARjWWkIllMlNzVg7JKq9RKWPlJABQUNq6YvAjE/HobctjH/NA+bSiDMDvouBVjp4Wwnf1VP1OEv7Zgjtuxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="front.js" defer></script>
+    
+    
+  
+</head>
+<body>
+    <div class="outer-div">
+        <form class="login-user">
+            <input type="text" id="name" placeholder="Name"/>
+            <input type="text" id="room" placeholder="Enter Room No."/>
+            <input id="but" type="button" value="JOIN">
+        </form>
+            <div class="chatdd">
+                 <ul class="chat-display"></ul>
+                 <p class="activity"></p>
+            </div>
+     
+       
+        <form class="chat">
+            <input class="txt" id="txt" type="text">
+            <input id="msg" type="button"  value="SEND">
+        </form>
+        <div>
+            <p class="user-list">users</p>
+            <p class="room-list">rooms</p>
+           </div>
+    </div>
+   
+    </body>
+</html>
